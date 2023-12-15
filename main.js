@@ -3,8 +3,25 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js' //novo
 import * as THREE from 'three'; 
 
 /* cena... */
-let cena = new THREE.Scene()
+const cena = new THREE.Scene()
 
+
+
+// Configurando o canvas(retangulo)
+const canvas = document.createElement('canvas');
+canvas.width = 800;
+canvas.height = 600;
+//document.body.appendChild(canvas);
+let meuCanvas = document.getElementById( 'meuCanvas' );
+let renderer = new THREE.WebGLRenderer( { canvas: meuCanvas } );
+
+
+// Configurando a câmera
+const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
+camera.position.set(4, 3, 2);
+
+// Adicionando o OrbitControls
+const controls = new OrbitControls(camera, meuCanvas);
 /* geometria...  (novo)*/
 let carregador = new GLTFLoader()
 carregador.load(
@@ -13,24 +30,19 @@ carregador.load(
         cena.add( gltf.scene )
     }
 )
-
-/* camara.. */
-let camara = new THREE.PerspectiveCamera( 50, 1920  / 1080, 0.01, 1000 )
-camara.position.set(0,2,4)
-//camara.lookAt(0,0,0)
-
 /* renderer... */
-let renderer = new THREE.WebGLRenderer()
-renderer.setSize( 1920, 1080 )
-document.body.appendChild( renderer.domElement )
 
+renderer.setSize( 800, 600 )
+
+renderer.shadowMap.enabled=true;
 let grelha = new THREE.GridHelper()
 cena.add( grelha )
 
 let eixos = new THREE.AxesHelper(3)
 cena.add( eixos )
 
-new OrbitControls( camara, renderer.domElement ) // sem o THREE.
+
+
 
 
 // Renderizar e animar
@@ -44,7 +56,7 @@ function animar() {
     if (delta  < latencia_minima)   // não exceder a taxa de atualização máxima definida
         return;                     
         
-    renderer.render( cena, camara )
+    renderer.render( cena, camera )
     
     delta = delta % latencia_minima;// atualizar delta com o excedente
 }
