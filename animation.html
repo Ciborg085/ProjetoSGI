@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Animar com Ações Importadas de Blender</title>
+  </head>
+
+  <body>
+    <div>
+      <canvas id="meuCanvas"></canvas>
+    </div>
+
+    <div>
+      <p>
+        <button id="btn_play">Play</button>
+        <button id="btn_pause">Pause</button>
+        <button id="btn_stop">Stop</button>
+        <button id="btn_reverse">Reverse</button>
+        <label
+          >Loop:
+          <select id="menu_loop">
+            <option value="1">Uma Vez</option>
+            <option value="2" selected>Repetir</option>
+            <option value="3">Ping Pong</option>
+          </select>
+        </label>
+      </p>
+    </div>
+
+    <script src="/node_modules/three/build/three.min.js"></script>
+    <script src="/node_modules/three/examples/js/controls/OrbitControls.js"></script>
+    <script src="/node_modules/three/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script src="main.js"></script>
+  </body>
+</html>
