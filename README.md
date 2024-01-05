@@ -8,3 +8,9 @@ rotação da camara
 tirar as pernas
 mudar material
 mudar cor
+rodar a mesa
+background transparente
+vistas default
+mudar a luz com as vistas
+fullscreen ?
+cores/ texturas predefinidas butoes

@@ -20,8 +20,8 @@ camara.position.set(6,4,7);
 camara.lookAt(0,0,0)
 
 
-const clickableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R']
-let objects = []
+export const clickableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R']
+export let objects = []
 let playedAnimation = [false,false,false,false]
 
 let raycaster = new THREE.Raycaster()
@@ -35,18 +35,19 @@ let rato = new THREE.Vector2()
 let eixos = new THREE.AxesHelper()
 cena.add(eixos)
 
-let grelha = new THREE.GridHelper()
-cena.add(grelha)
+let grelha = new THREE.GridHelper();
+cena.add(grelha);
  
-let controlos = new THREE.OrbitControls( camara, renderer.domElement)
+let controlos = new OrbitControls( camara, renderer.domElement);
 
-let misturador = new THREE.AnimationMixer(cena)
+let misturador = new THREE.AnimationMixer(cena);
 
-let acaoPortaDir, acaoPortaEsq;
-let carregador = new THREE.GLTFLoader()
+let acaoPortaDir
+let acaoPortaEsq;
+let carregador = new GLTFLoader();
 carregador.load(
     'vintageDesk.gltf',
-    function ( gltf ) {
+    ( gltf ) => {
         cena.add(gltf.scene)
 
         clipe1 = THREE.AnimationClip.findByName( gltf.animations, 'PortaDirAbrir.001' ) 
@@ -69,7 +70,7 @@ carregador.load(
         acaoGavetaEsq = misturador.clipAction( clipe4 ) 
         acaoGavetaEsq.clampWhenFinished = true
 
-        cena.traverse(function(x) {
+        cena.traverse((x) => {
             // if (x.isMesh) {
             //     x.castShadow = true
             //     x.receiveShadow = true
@@ -136,6 +137,9 @@ function pegarObjeto() {
     raycaster.setFromCamera(rato, camara)
 
     let intersetados = raycaster.intersectObjects(objects);
+
+    console.log("alvo : \n")
+    console.log(intersetados[0].name)
 
     if (intersetados.length > 0) {
         // alvo.material.color = intersetados[0].object.material.color;
@@ -218,7 +222,7 @@ let menu_loop = document.getElementById("menu_loop");
 // });
 
 
-menu_loop.addEventListener("change", function() { 
+menu_loop.addEventListener("change", () => { 
     // alert(menu_loop.value);
     switch(menu_loop.value) {
         case "1":
@@ -243,23 +247,24 @@ menu_loop.addEventListener("change", function() {
 },false);
 
 
-botaoPlay.addEventListener("click",function() { acaoPortaDir.play(); acaoPortaEsq.play() });
+botaoPlay.addEventListener("click",() => { acaoPortaDir.play(); acaoPortaEsq.play() });
 
-botaoStop.addEventListener("click",function() { acaoPortaDir.stop(); acaoPortaEsq.stop() });
+botaoStop.addEventListener("click",() => { acaoPortaDir.stop(); acaoPortaEsq.stop() });
 
-botaoPause.addEventListener("click",function() {
+botaoPause.addEventListener("click",() => {
     acaoPortaDir.paused = !acaoPortaDir.paused;
     acaoPortaEsq.paused = !acaoPortaEsq.paused;
 });
 
-botaoReverse.addEventListener("click",function() {
+botaoReverse.addEventListener("click",() => {
     acaoPortaDir.timeScale = -acaoPortaDir.timeScale 
     acaoPortaEsq.timeScale = -acaoPortaEsq.timeScale 
 });
 
 
-window.onclick = function(evento) {
+meuCanvas.addEventListener("click", (evento) => {
     rato.x = (evento.clientX / width) * 2 - 1
     rato.y = -(evento.clientY / height) * 2 + 1
+    console.log("x: " + rato.x + "\n" + "y: " + rato.y + "\n");
     pegarObjeto();
-}
+});
