@@ -1,45 +1,49 @@
-var cena = new THREE.Scene();
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js' 
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js' //novo
+import * as THREE from 'three'; 
 
-// criar uma camara... 
-var camara = new THREE.PerspectiveCamera( 70, 800 / 600, 0.01, 1000 ); 
-camara.position.set(6,4,7);
-camara.lookAt(0,0,0)
+const cena = new THREE.Scene();
 
-var meuCanvas = document.getElementById( 'meuCanvas' )
-var renderer = new THREE.WebGLRenderer( { canvas: meuCanvas } )
-var width = 800
-var height = 600
+const meuCanvas = document.getElementById( 'meuCanvas' )
+let renderer = new THREE.WebGLRenderer( { canvas: meuCanvas } )
+const width = 800
+const height = 600
+
 //document.body.appendChild( renderer.domElement ); 
 renderer.setSize(width, height)
 
 renderer.shadowMap.enabled = true
 
+// criar uma camara... 
+let camara = new THREE.PerspectiveCamera( 70, width / height, 0.01, 1000 ); 
+camara.position.set(6,4,7);
+camara.lookAt(0,0,0)
+
+
 const clickableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R']
-var objects = []
+let objects = []
 let playedAnimation = [false,false,false,false]
 
-var raycaster = new THREE.Raycaster()
-var rato = new THREE.Vector2()
+let raycaster = new THREE.Raycaster()
+let rato = new THREE.Vector2()
 
-var luz = new THREE.PointLight( "white" )
-luz.position.set(5,3,5)
-luz.castShadow =true
-cena.add(luz)
+// let luz = new THREE.PointLight( "white" )
+// luz.position.set(5,3,5)
+// luz.castShadow =true
+// cena.add(luz)
 
-var eixos = new THREE.AxesHelper()
+let eixos = new THREE.AxesHelper()
 cena.add(eixos)
 
-var grelha = new THREE.GridHelper()
+let grelha = new THREE.GridHelper()
 cena.add(grelha)
  
-var controlos = new THREE.OrbitControls( camara, renderer.domElement)
+let controlos = new THREE.OrbitControls( camara, renderer.domElement)
 
-var relogio = new THREE.Clock()
+let misturador = new THREE.AnimationMixer(cena)
 
-var misturador = new THREE.AnimationMixer(cena)
-
-var acaoPortaDir, acaoPortaEsq;
-var carregador = new THREE.GLTFLoader()
+let acaoPortaDir, acaoPortaEsq;
+let carregador = new THREE.GLTFLoader()
 carregador.load(
     'vintageDesk.gltf',
     function ( gltf ) {
@@ -81,20 +85,57 @@ carregador.load(
         
     }
 )
+let delta = 0;
+let relogio = new THREE.Clock();
+const  latencia_minima = 1 / 60;
 
 function animar() {
     requestAnimationFrame(animar);
-    // mostrar ...
+
+    delta += relogio.getDelta();    // acumula tempo que passou desde a ultima chamada de getDelta
+
+    if (delta  < latencia_minima)   // não exceder a taxa de atualização máxima definida
+        return;                     
+
     renderer.render(cena,camara);
+
     misturador.update( relogio.getDelta() ) 
+    // delta = delta % latencia_minima;// atualizar delta com o excedente
 }
 
 animar();
 
+function luzes(cena) {
+    /* luzes... */
+    const luzAmbiente = new THREE.AmbientLight( "lightgreen" )
+    cena.add(luzAmbiente)
+    
+    /* point light */
+    const luzPonto = new THREE.PointLight( "white" )
+    luzPonto.position.set( 0, 2, 2)
+    luzPonto.intensity= 15 		
+    cena.add( luzPonto )
+
+    // auxiliar visual
+    /*const lightHelper1 = new THREE.PointLightHelper( luzPonto, 0.2 )
+    cena.add( lightHelper1 )
+
+    /* directional light*/
+    const luzDirecional = new THREE.DirectionalLight( "white" );
+    luzDirecional.position.set( 3, 2, 0 ); //aponta na direção de (0, 0, 0)
+    luzDirecional.intensity= 30
+    cena.add( luzDirecional );
+    // auxiliar visual
+    const lightHelper2 = new THREE.DirectionalLightHelper( luzDirecional, 0.2 )
+    cena.add( lightHelper2 )
+}
+
+luzes(cena)
+
 function pegarObjeto() {
     raycaster.setFromCamera(rato, camara)
 
-    var intersetados = raycaster.intersectObjects(objects);
+    let intersetados = raycaster.intersectObjects(objects);
 
     if (intersetados.length > 0) {
         // alvo.material.color = intersetados[0].object.material.color;
@@ -151,11 +192,11 @@ function playAnimation(name) {
     
 }
 
-var botaoPlay = document.getElementById("btn_play");
-var botaoPause = document.getElementById("btn_pause");
-var botaoStop = document.getElementById("btn_stop");
-var botaoReverse = document.getElementById("btn_reverse");
-var menu_loop = document.getElementById("menu_loop");
+let botaoPlay = document.getElementById("btn_play");
+let botaoPause = document.getElementById("btn_pause");
+let botaoStop = document.getElementById("btn_stop");
+let botaoReverse = document.getElementById("btn_reverse");
+let menu_loop = document.getElementById("menu_loop");
 
 // botaoPlay.addEventListener("click",function() { 
 //     switch (menu_loop) {
