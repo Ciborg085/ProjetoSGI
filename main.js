@@ -153,40 +153,64 @@ function playAnimation(name) {
     switch (name) {
         case 'Porta_L':
             if (playedAnimation[0] === false) {
+                acaoPortaEsq.clampWhenFinished = true;
+                acaoPortaEsq.timeScale = 1;
+                acaoPortaEsq.setLoop(THREE.LoopOnce)
                 acaoPortaEsq.play();
+                acaoPortaEsq.paused = false;
+                console.log(acaoPortaEsq.clampWhenFinished)
                 playedAnimation[0] = true;
             } else {
-                acaoPortaEsq.stop();
+                acaoPortaEsq.timeScale = -1;
+                acaoPortaEsq.paused = false;
                 playedAnimation[0] = false;
             }
             break;
 
         case 'Porta_R':
             if (playedAnimation[1] === false) {
+                acaoPortaDir.clampWhenFinished = true;
+                acaoPortaDir.timeScale = 1;
+                acaoPortaDir.setLoop(THREE.LoopOnce)
                 acaoPortaDir.play();
+                acaoPortaDir.paused = false;
+                console.log(acaoPortaDir.clampWhenFinished)
                 playedAnimation[1] = true;
             } else {
-                acaoPortaDir.stop();
+                acaoPortaDir.timeScale = -1;
+                acaoPortaDir.paused = false;
                 playedAnimation[1] = false;
             }
             break;
 
         case 'Gaveta_L':
             if (playedAnimation[2] === false) {
-                acaoGavetaEsq.play();
+                acaoGaveta_L.clampWhenFinished = true;
+                acaoGaveta_L.timeScale = 1;
+                acaoGaveta_L.setLoop(THREE.LoopOnce)
+                acaoGaveta_L.play();
+                acaoGaveta_L.paused = false;
+                console.log(acaoGaveta_L.clampWhenFinished)
                 playedAnimation[2] = true;
             } else {
-                acaoGavetaEsq.stop();
+                acaoGaveta_L.timeScale = -1;
+                acaoGaveta_L.paused = false;
                 playedAnimation[2] = false;
             }
             break;
 
         case 'Gaveta_R':
             if (playedAnimation[3] === false) {
-                acaoGavetaDir.play();
+                acaoGaveta_R.clampWhenFinished = true;
+                acaoGaveta_R.timeScale = 1;
+                acaoGaveta_R.setLoop(THREE.LoopOnce)
+                acaoGaveta_R.play();
+                acaoGaveta_R.paused = false;
+                console.log(acaoGaveta_R.clampWhenFinished)
                 playedAnimation[3] = true;
             } else {
-                acaoGavetaDir.stop();
+                acaoGaveta_R.timeScale = -1;
+                acaoGaveta_R.paused = false;
                 playedAnimation[3] = false;
             }
             break;
