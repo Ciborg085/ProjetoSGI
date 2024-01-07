@@ -122,7 +122,14 @@
       <button id="btn_pause">Pause</button>
       <button id="btn_stop">Stop</button>
       <button id="btn_reverse">Reverse</button>
-      <button id="menu_loop">Menu</button>
+      <label
+          >Loop:
+          <select id="menu_loop">
+              <option value="1">Uma Vez</option>
+              <option value="2" selected>Repetir</option>
+              <option value="3">Ping Pong</option>
+          </select>
+      </label>
   </div>
   
 
@@ -136,7 +143,7 @@
     }
   </script>
 
-  <script type="module" src="./main.js"></script>
+  <script type="module" defer src="./main.js"></script>
 
   <script>
     function openNav() {
