@@ -185,32 +185,32 @@ function playAnimation(name) {
 
         case 'Gaveta_L':
             if (playedAnimation[2] === false) {
-                acaoGaveta_L.clampWhenFinished = true;
-                acaoGaveta_L.timeScale = 1;
-                acaoGaveta_L.setLoop(THREE.LoopOnce)
-                acaoGaveta_L.play();
-                acaoGaveta_L.paused = false;
-                console.log(acaoGaveta_L.clampWhenFinished)
+                acaoGavetaEsq.clampWhenFinished = true;
+                acaoGavetaEsq.timeScale = 1;
+                acaoGavetaEsq.setLoop(THREE.LoopOnce)
+                acaoGavetaEsq.play();
+                acaoGavetaEsq.paused = false;
+                console.log(acaoGavetaEsq.clampWhenFinished)
                 playedAnimation[2] = true;
             } else {
-                acaoGaveta_L.timeScale = -1;
-                acaoGaveta_L.paused = false;
+                acaoGavetaEsq.timeScale = -1;
+                acaoGavetaEsq.paused = false;
                 playedAnimation[2] = false;
             }
             break;
 
         case 'Gaveta_R':
             if (playedAnimation[3] === false) {
-                acaoGaveta_R.clampWhenFinished = true;
-                acaoGaveta_R.timeScale = 1;
-                acaoGaveta_R.setLoop(THREE.LoopOnce)
-                acaoGaveta_R.play();
-                acaoGaveta_R.paused = false;
-                console.log(acaoGaveta_R.clampWhenFinished)
+                acaoGavetaDir.clampWhenFinished = true;
+                acaoGavetaDir.timeScale = 1;
+                acaoGavetaDir.setLoop(THREE.LoopOnce)
+                acaoGavetaDir.play();
+                acaoGavetaDir.paused = false;
+                console.log(acaoGavetaDir.clampWhenFinished)
                 playedAnimation[3] = true;
             } else {
-                acaoGaveta_R.timeScale = -1;
-                acaoGaveta_R.paused = false;
+                acaoGavetaDir.timeScale = -1;
+                acaoGavetaDir.paused = false;
                 playedAnimation[3] = false;
             }
             break;
