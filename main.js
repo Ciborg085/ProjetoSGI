@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js' //novo
 import * as THREE from 'three'; 
 
 const cena = new THREE.Scene();
+cena.background = new THREE.Color( 0xeeeefa );
 
 const meuCanvas = document.getElementById( 'meuCanvas' )
 const renderer = new THREE.WebGLRenderer( { canvas: meuCanvas } )
@@ -17,14 +18,19 @@ renderer.shadowMap.enabled = true
 // criar uma camara... 
 const camara = new THREE.PerspectiveCamera( 70, width / height, 0.01, 1000 ); 
 const controlos = new OrbitControls( camara, renderer.domElement);
-camara.position.set(1.5,2,5);
+camara.position.set(1.25,1.25,2);
 camara.lookAt(0,0,0);
 controlos.update();
 
+// renderer.setClearColorHex( 0x000000, 1);
 
 
-const clickableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R']
-let objects = []
+
+const namesClickableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R']
+const namesChangableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R','Pés','Tampo','Tampo2','Nicho']
+const namePlane = 'Plane'
+let clickableObjects = []
+let changableObjects = []
 let playedAnimation = [false,false,false,false]
 
 let raycaster = new THREE.Raycaster()
@@ -39,6 +45,9 @@ let rato = new THREE.Vector2()
  
 
 let misturador = new THREE.AnimationMixer(cena);
+let imageUtils = new THREE.ImageUtils;
+
+const loader = new THREE.TextureLoader();
 
 let acaoPortaDir = null;
 let acaoPortaEsq = null;
@@ -73,11 +82,19 @@ carregador.load(
                 x.receiveShadow = true
             }
 
-            if (clickableObjects.includes(x.name)) {
-                objects.push(x);
+            if (namesClickableObjects.includes(x.name)) {
+                clickableObjects.push(x);
             }
+            if (namesChangableObjects.includes(x.name)) {
+                changableObjects.push(x);
+            }
+            if (x.name === namePlane) {
+                x.visible = false;
+            }
+
         })
-        console.log(objects)
+        // console.log(clickableObjects)
+        console.log(changableObjects)
         
     }
 )
@@ -125,16 +142,16 @@ function luzes(cena) {
     cena.add( luzDirecional );
 
     // auxiliar visual
-    const lightHelper2 = new THREE.DirectionalLightHelper( luzDirecional, 0.2 )
-    cena.add( lightHelper2 )
+    // const lightHelper2 = new THREE.DirectionalLightHelper( luzDirecional, 0.2 )
+    // cena.add( lightHelper2 )
 }
 
 luzes(cena)
 
-function pegarObjeto(objects) {
+function pegarObjeto(clickableObjects) {
     raycaster.setFromCamera(rato, camara)
 
-    let intersetados = raycaster.intersectObjects(objects);
+    let intersetados = raycaster.intersectObjects(clickableObjects);
 
     if (intersetados.length > 0) {
         // alvo.material.color = intersetados[0].object.material.color;
@@ -154,14 +171,14 @@ function playAnimation(name) {
         case 'Porta_L':
             if (playedAnimation[0] === false) {
                 acaoPortaEsq.clampWhenFinished = true;
-                acaoPortaEsq.timeScale = 1;
+                acaoPortaEsq.timeScale = 1.75;
                 acaoPortaEsq.setLoop(THREE.LoopOnce)
                 acaoPortaEsq.play();
                 acaoPortaEsq.paused = false;
                 console.log(acaoPortaEsq.clampWhenFinished)
                 playedAnimation[0] = true;
             } else {
-                acaoPortaEsq.timeScale = -1;
+                acaoPortaEsq.timeScale = -1.75;
                 acaoPortaEsq.paused = false;
                 playedAnimation[0] = false;
             }
@@ -170,14 +187,14 @@ function playAnimation(name) {
         case 'Porta_R':
             if (playedAnimation[1] === false) {
                 acaoPortaDir.clampWhenFinished = true;
-                acaoPortaDir.timeScale = 1;
+                acaoPortaDir.timeScale = 1.75;
                 acaoPortaDir.setLoop(THREE.LoopOnce)
                 acaoPortaDir.play();
                 acaoPortaDir.paused = false;
                 console.log(acaoPortaDir.clampWhenFinished)
                 playedAnimation[1] = true;
             } else {
-                acaoPortaDir.timeScale = -1;
+                acaoPortaDir.timeScale = -1.75;
                 acaoPortaDir.paused = false;
                 playedAnimation[1] = false;
             }
@@ -186,14 +203,14 @@ function playAnimation(name) {
         case 'Gaveta_L':
             if (playedAnimation[2] === false) {
                 acaoGavetaEsq.clampWhenFinished = true;
-                acaoGavetaEsq.timeScale = 1;
+                acaoGavetaEsq.timeScale = 1.75;
                 acaoGavetaEsq.setLoop(THREE.LoopOnce)
                 acaoGavetaEsq.play();
                 acaoGavetaEsq.paused = false;
                 console.log(acaoGavetaEsq.clampWhenFinished)
                 playedAnimation[2] = true;
             } else {
-                acaoGavetaEsq.timeScale = -1;
+                acaoGavetaEsq.timeScale = -1.75;
                 acaoGavetaEsq.paused = false;
                 playedAnimation[2] = false;
             }
@@ -202,14 +219,14 @@ function playAnimation(name) {
         case 'Gaveta_R':
             if (playedAnimation[3] === false) {
                 acaoGavetaDir.clampWhenFinished = true;
-                acaoGavetaDir.timeScale = 1;
+                acaoGavetaDir.timeScale = 1.75;
                 acaoGavetaDir.setLoop(THREE.LoopOnce)
                 acaoGavetaDir.play();
                 acaoGavetaDir.paused = false;
                 console.log(acaoGavetaDir.clampWhenFinished)
                 playedAnimation[3] = true;
             } else {
-                acaoGavetaDir.timeScale = -1;
+                acaoGavetaDir.timeScale = -1.75;
                 acaoGavetaDir.paused = false;
                 playedAnimation[3] = false;
             }
@@ -306,6 +323,12 @@ function playAnimation(name) {
 
 const botaoAutoRotate = document.getElementById("btn-autorotate");
 
+const botaoCorWicker = document.getElementById("btn-color-wicker2");
+const botaoCorWood = document.getElementById("btn-color-wood");
+
+const botaoMaterialWicker = document.getElementById("btn-material-wicker2");
+const botaoMaterialWood = document.getElementById("btn-material-wood");
+
 botaoAutoRotate.addEventListener("change", ()=> {
     if (botaoAutoRotate.checked) {
         controlos.autoRotate = 1;
@@ -315,12 +338,113 @@ botaoAutoRotate.addEventListener("change", ()=> {
 });
 
 
+function mudarCor(name) {
+    let materialWicker;
+    let materialWood;
+    const textureWicker = loader.load('Wicker2_Color_1K.png', (texture) => {
+        materialWicker = new THREE.MeshBasicMaterial( {
+            map: texture
+        } );
+    });
+    const textureWood = loader.load('Wood_Color_2K.png', (texture) => {
+        materialWood = new THREE.MeshBasicMaterial( {
+            map: texture
+        } );
+    });
+
+    console.log(textureWicker)
+    
+
+    switch(name) {
+        case "wicker":
+            changableObjects.forEach(obj => {
+                // obj.material.map = materialWicker;
+                // obj.material.needsUpdate = true;
+                obj.material.color.setRGB(1,2,1);
+                obj.material.map = textureWicker;
+            });
+            break;
+        case "wood":
+            changableObjects.forEach(obj => {
+                obj.material.map = materialWood;
+                obj.material.needsUpdate = true;
+            });
+            break;
+        default:
+            console.log("Invalid color name");
+            break;
+    }
+};
+
+function mudarMaterial(name) {
+    let materialWicker;
+    let materialWood;
+    const textureWicker = loader.load('Wicker2_Color_1K.png', (texture) => {
+        materialWicker = new THREE.MeshBasicMaterial( {
+            map: texture
+        } );
+    });
+    const textureWood = loader.load('Wood_Color_2K.png', (texture) => {
+        materialWood = new THREE.MeshBasicMaterial( {
+            map: texture
+        } );
+    });
+    switch(name) {
+        case "wicker":
+
+            changableObjects.forEach(obj => {
+                console.log(obj.material.color);
+                const oldColor = obj.material.color.clone();
+                console.log(oldColor);
+                obj.material.map = textureWicker;
+                obj.material.color.copy(oldColor);
+            });
+            console.log("changed material");
+            console.log(changableObjects);
+            break;
+        case "wood":
+            changableObjects.forEach(obj => {
+                const oldColor = obj.material.color.clone();
+                console.log(oldColor);
+                obj.material.map = textureWood;
+                obj.material.color.copy(oldColor);
+            });
+            console.log("changed material");
+            console.log(changableObjects);
+            break;
+        default:
+            console.log("Invalid material name");
+            break;
+    }
+}
+
+botaoCorWicker.addEventListener("click", () => {
+    mudarCor("wicker");
+});
+
+botaoCorWood.addEventListener("click", () => {
+    mudarCor("wood");
+});
+
+botaoMaterialWicker.addEventListener("click", () => {
+    mudarMaterial("wicker");
+});
+
+botaoMaterialWood.addEventListener("click", () => {
+    mudarMaterial("wood");
+});
+
+
+
+
+
+
 meuCanvas.addEventListener("click", (evento) => {
     let limites = evento.target.getBoundingClientRect();
 
     rato.x = 2 * (evento.clientX - limites.left) / parseInt(meuCanvas.style.width) - 1;
     rato.y = 1 - 2 * (evento.clientY - limites.top) / parseInt(meuCanvas.style.height);
     console.log("x: " + rato.x + "\n" + "y: " + rato.y + "\n");
-    let nomeObjeto = pegarObjeto(objects);
+    let nomeObjeto = pegarObjeto(clickableObjects);
     playAnimation(nomeObjeto)
 });

@@ -8,8 +8,9 @@ rotação da camara
 
 
 TODO:
-mudar material
+tirar o plane, meter o fundo branco
 mudar cor
+mudar material
 tirar as pernas
 rodar a mesa
 background transparente
