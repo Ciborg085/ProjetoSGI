@@ -24,7 +24,7 @@ controlos.update();
 
 
 const clickableObjects = ['Porta_L','Porta_R','Gaveta_L','Gaveta_R']
-var objects = []
+let objects = []
 let playedAnimation = [false,false,false,false]
 
 let raycaster = new THREE.Raycaster()
@@ -224,11 +224,11 @@ function playAnimation(name) {
     
 }
 
-let botaoPlay = document.getElementById("btn_play");
-let botaoPause = document.getElementById("btn_pause");
-let botaoStop = document.getElementById("btn_stop");
-let botaoReverse = document.getElementById("btn_reverse");
-let menu_loop = document.getElementById("menu_loop");
+// let botaoPlay = document.getElementById("btn_play");
+// let botaoPause = document.getElementById("btn_pause");
+// let botaoStop = document.getElementById("btn_stop");
+// let botaoReverse = document.getElementById("btn_reverse");
+// let menu_loop = document.getElementById("menu_loop");
 
 // botaoPlay.addEventListener("click",function() { 
 //     switch (menu_loop) {
@@ -250,81 +250,77 @@ let menu_loop = document.getElementById("menu_loop");
 // });
 
 
-menu_loop.addEventListener("change", () => { 
-    // alert(menu_loop.value);
-    switch(menu_loop.value) {
-        case "1":
-            // alert("once");
-            acaoPortaDir.clampWhenFinished = -acao.clampWhenFinished;
-            acaoPortaDir.setLoop(THREE.LoopOnce);
-            acaoPortaEsq.setLoop(THREE.LoopOnce);
+// menu_loop.addEventListener("change", () => { 
+//     // alert(menu_loop.value);
+//     switch(menu_loop.value) {
+//         case "1":
+//             // alert("once");
+//             acaoPortaDir.clampWhenFinished = -acao.clampWhenFinished;
+//             acaoPortaDir.setLoop(THREE.LoopOnce);
+//             acaoPortaEsq.setLoop(THREE.LoopOnce);
 
-            acao.clampWhenFinished = -acao.clampWhenFinished;
-            acaoPortaEsq.setLoop(THREE.LoopOnce);
-            break;
-        case "2":
-            // alert("repeat");
-            acaoPortaDir.setLoop(THREE.LoopRepeat);
-            acaoPortaEsq.setLoop(THREE.LoopRepeat);
-            break;
-        case "3":
-            // alert("ping");
-            acaoPortaDir.setLoop(THREE.LoopPingPong);
-            acaoPortaEsq.setLoop(THREE.LoopPingPong);
-            break;
+//             acao.clampWhenFinished = -acao.clampWhenFinished;
+//             acaoPortaEsq.setLoop(THREE.LoopOnce);
+//             break;
+//         case "2":
+//             // alert("repeat");
+//             acaoPortaDir.setLoop(THREE.LoopRepeat);
+//             acaoPortaEsq.setLoop(THREE.LoopRepeat);
+//             break;
+//         case "3":
+//             // alert("ping");
+//             acaoPortaDir.setLoop(THREE.LoopPingPong);
+//             acaoPortaEsq.setLoop(THREE.LoopPingPong);
+//             break;
+//     }
+// },false);
+
+
+
+// botaoPlay.addEventListener("click",() => {
+//     acaoPortaDir.play(); 
+//     acaoPortaEsq.play();
+//     acaoGavetaDir.play();
+//     acaoGavetaEsq.play();
+// });
+
+// botaoStop.addEventListener("click",() => {
+//     acaoPortaDir.stop();
+//     acaoPortaEsq.stop();
+//     acaoGavetaDir.stop();
+//     acaoGavetaEsq.stop();
+// });
+
+// botaoPause.addEventListener("click",() => {
+//     acaoPortaDir.paused = !acaoPortaDir.paused;
+//     acaoPortaEsq.paused = !acaoPortaEsq.paused;
+// });
+
+// botaoReverse.addEventListener("click",() => {
+//     acaoPortaDir.timeScale = -acaoPortaDir.timeScale 
+//     acaoPortaEsq.timeScale = -acaoPortaEsq.timeScale 
+// });
+//
+
+
+
+const botaoAutoRotate = document.getElementById("btn-autorotate");
+
+botaoAutoRotate.addEventListener("change", ()=> {
+    if (botaoAutoRotate.checked) {
+        controlos.autoRotate = 1;
+    } else {
+        controlos.autoRotate = 0;
     }
-},false);
-
-
-
-botaoPlay.addEventListener("click",() => {
-    acaoPortaDir.play(); 
-    acaoPortaEsq.play();
-    acaoGavetaDir.play();
-    acaoGavetaEsq.play();
-});
-
-botaoStop.addEventListener("click",() => {
-    acaoPortaDir.stop();
-    acaoPortaEsq.stop();
-    acaoGavetaDir.stop();
-    acaoGavetaEsq.stop();
-
-});
-
-botaoPause.addEventListener("click",() => {
-    acaoPortaDir.paused = !acaoPortaDir.paused;
-    acaoPortaEsq.paused = !acaoPortaEsq.paused;
-});
-
-botaoReverse.addEventListener("click",() => {
-    acaoPortaDir.timeScale = -acaoPortaDir.timeScale 
-    acaoPortaEsq.timeScale = -acaoPortaEsq.timeScale 
 });
 
 
 meuCanvas.addEventListener("click", (evento) => {
     let limites = evento.target.getBoundingClientRect();
 
-    // rato.x = (evento.clientX / width) * 2 - 1
-    // rato.y = -(evento.clientY / height) * 2 + 1
     rato.x = 2 * (evento.clientX - limites.left) / parseInt(meuCanvas.style.width) - 1;
     rato.y = 1 - 2 * (evento.clientY - limites.top) / parseInt(meuCanvas.style.height);
     console.log("x: " + rato.x + "\n" + "y: " + rato.y + "\n");
     let nomeObjeto = pegarObjeto(objects);
     playAnimation(nomeObjeto)
-
-    // raycaster.setFromCamera(rato, camara)
-
-    // const intersetados = raycaster.intersectObjects(objects);
-    // console.log("Objects:");
-    // console.log(objects);
-
-    // if (intersetados.length > 0) {
-    //     // alvo.material.color = intersetados[0].object.material.color;
-    //     // playAnimation(intersetados[0].name)
-    //     console.log("alvo : \n")
-    //     console.log(intersetados[0].object.parent.name)
-
-    // }
 });
