@@ -8,9 +8,9 @@ rotação da camara
 
 
 TODO:
-tirar as pernas
 mudar material
 mudar cor
+tirar as pernas
 rodar a mesa
 background transparente
 vistas pre-definidas
