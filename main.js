@@ -32,6 +32,8 @@ const namePlane = 'Plane'
 let clickableObjects = []
 let changableObjects = []
 let playedAnimation = [false,false,false,false]
+let cor_antiga = null;
+let material_antigo = null;
 
 let raycaster = new THREE.Raycaster()
 let rato = new THREE.Vector2()
@@ -76,6 +78,7 @@ carregador.load(
         console.log(clipe4)
         acaoGavetaEsq = misturador.clipAction( clipe4 ) 
 
+        let i=0;
         cena.traverse((x) => {
             if (x.isMesh) {
                 x.castShadow = true
@@ -87,6 +90,15 @@ carregador.load(
             }
             if (namesChangableObjects.includes(x.name)) {
                 changableObjects.push(x);
+                if (i===1) {
+                    cor_antiga = x.material.color.clone();
+                    material_antigo = x.material.clone();
+                    console.log("Cor antiga: ");
+                    console.log(cor_antiga)
+                    console.log("Material_antigo");
+                    console.log(material_antigo);
+                }
+                i++;
             }
             if (x.name === namePlane) {
                 x.visible = false;
@@ -323,8 +335,10 @@ function playAnimation(name) {
 
 const botaoAutoRotate = document.getElementById("btn-autorotate");
 
-const botaoCorWicker = document.getElementById("btn-color-wicker2");
 const botaoCorWood = document.getElementById("btn-color-wood");
+const botaoCorLightOak = document.getElementById("btn-color-light-oak");
+const botaoCorWalnut = document.getElementById("btn-color-walnut");
+const botaoCorMahogany = document.getElementById("btn-color-mahogany");
 
 const botaoMaterialWicker = document.getElementById("btn-material-wicker2");
 const botaoMaterialWood = document.getElementById("btn-material-wood");
@@ -338,36 +352,30 @@ botaoAutoRotate.addEventListener("change", ()=> {
 });
 
 
+const colorLightOak = new THREE.Color(0xD2B48C);
+const colorWalnut = new THREE.Color(0x8B4513);
+const colorMahogany = new THREE.Color(0xC04000);
+
 function mudarCor(name) {
-    let materialWicker;
-    let materialWood;
-    const textureWicker = loader.load('Wicker2_Color_1K.png', (texture) => {
-        materialWicker = new THREE.MeshBasicMaterial( {
-            map: texture
-        } );
-    });
-    const textureWood = loader.load('Wood_Color_2K.png', (texture) => {
-        materialWood = new THREE.MeshBasicMaterial( {
-            map: texture
-        } );
-    });
-
-    console.log(textureWicker)
-    
-
     switch(name) {
-        case "wicker":
-            changableObjects.forEach(obj => {
-                // obj.material.map = materialWicker;
-                // obj.material.needsUpdate = true;
-                obj.material.color.setRGB(1,2,1);
-                obj.material.map = textureWicker;
-            });
-            break;
         case "wood":
             changableObjects.forEach(obj => {
-                obj.material.map = materialWood;
-                obj.material.needsUpdate = true;
+                obj.material.color = cor_antiga;
+            });
+            break;
+        case "lightOak":
+            changableObjects.forEach(obj => {
+                obj.material.color = colorLightOak;
+            });
+            break;
+        case "walnut":
+            changableObjects.forEach(obj => {
+                obj.material.color = colorWalnut;
+            });
+            break;
+        case "mahogany":
+            changableObjects.forEach(obj => {
+                obj.material.color = colorMahogany;
             });
             break;
         default:
@@ -391,7 +399,6 @@ function mudarMaterial(name) {
     });
     switch(name) {
         case "wicker":
-
             changableObjects.forEach(obj => {
                 console.log(obj.material.color);
                 const oldColor = obj.material.color.clone();
@@ -418,13 +425,19 @@ function mudarMaterial(name) {
     }
 }
 
-botaoCorWicker.addEventListener("click", () => {
-    mudarCor("wicker");
-});
-
 botaoCorWood.addEventListener("click", () => {
     mudarCor("wood");
 });
+botaoCorLightOak.addEventListener("click", () => {
+    mudarCor("lightOak");
+});
+botaoCorWalnut.addEventListener("click", () => {
+    mudarCor("walnut");
+});
+botaoCorMahogany.addEventListener("click", () => {
+    mudarCor("mahogany");
+});
+
 
 botaoMaterialWicker.addEventListener("click", () => {
     mudarMaterial("wicker");
@@ -435,12 +448,8 @@ botaoMaterialWood.addEventListener("click", () => {
 });
 
 
-
-
-
-
 meuCanvas.addEventListener("click", (evento) => {
-    let limites = evento.target.getBoundingClientRect();
+    const limites = evento.target.getBoundingClientRect();
 
     rato.x = 2 * (evento.clientX - limites.left) / parseInt(meuCanvas.style.width) - 1;
     rato.y = 1 - 2 * (evento.clientY - limites.top) / parseInt(meuCanvas.style.height);

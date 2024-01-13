@@ -5,17 +5,19 @@ TODO asap:
 
 DONE:
 rotação da camara
-
+tirar o plane, meter o fundo branco
+background transparente
+mudar cor
 
 TODO:
-tirar o plane, meter o fundo branco
-mudar cor
 mudar material
-tirar as pernas
-rodar a mesa
-background transparente
+
+cores/texturas predefinidas butoes
 vistas pre-definidas
 mudar a luz com as vistas
-cores/texturas predefinidas butoes
 fullscreen ?
+tirar as pernas
+
+NOT NEEDED:
+rodar a mesa
 
