@@ -8,16 +8,16 @@ rotação da camara
 tirar o plane, meter o fundo branco
 background transparente
 mudar cor
+cores/texturas predefinidas butoes
+tirar as pes
 
 TODO:
 mudar material
 
-cores/texturas predefinidas butoes
-vistas pre-definidas
-mudar a luz com as vistas
-fullscreen ?
-tirar as pernas
 
 NOT NEEDED:
 rodar a mesa
+vistas pre-definidas
+mudar a luz com as vistas
+fullscreen ?
 

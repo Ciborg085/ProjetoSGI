@@ -18,6 +18,7 @@ renderer.shadowMap.enabled = true
 // criar uma camara... 
 const camara = new THREE.PerspectiveCamera( 70, width / height, 0.01, 1000 ); 
 const controlos = new OrbitControls( camara, renderer.domElement);
+controlos.maxDistance = 4;
 camara.position.set(1.25,1.25,2);
 camara.lookAt(0,0,0);
 controlos.update();
@@ -34,6 +35,7 @@ let changableObjects = []
 let playedAnimation = [false,false,false,false]
 let cor_antiga = null;
 let material_antigo = null;
+let pes = null;
 
 let raycaster = new THREE.Raycaster()
 let rato = new THREE.Vector2()
@@ -49,7 +51,6 @@ let rato = new THREE.Vector2()
 let misturador = new THREE.AnimationMixer(cena);
 let imageUtils = new THREE.ImageUtils;
 
-const loader = new THREE.TextureLoader();
 
 let acaoPortaDir = null;
 let acaoPortaEsq = null;
@@ -102,6 +103,9 @@ carregador.load(
             }
             if (x.name === namePlane) {
                 x.visible = false;
+            }
+            if (x.name === "Pés") {
+                pes = x;
             }
 
         })
@@ -352,6 +356,7 @@ botaoAutoRotate.addEventListener("change", ()=> {
 });
 
 
+let corAtual = cor_antiga;
 const colorLightOak = new THREE.Color(0xD2B48C);
 const colorWalnut = new THREE.Color(0x8B4513);
 const colorMahogany = new THREE.Color(0xC04000);
@@ -362,21 +367,25 @@ function mudarCor(name) {
             changableObjects.forEach(obj => {
                 obj.material.color = cor_antiga;
             });
+            corAtual = cor_antiga;
             break;
         case "lightOak":
             changableObjects.forEach(obj => {
                 obj.material.color = colorLightOak;
             });
+            corAtual = colorLightOak;
             break;
         case "walnut":
             changableObjects.forEach(obj => {
                 obj.material.color = colorWalnut;
             });
+            corAtual = colorWalnut;
             break;
         case "mahogany":
             changableObjects.forEach(obj => {
                 obj.material.color = colorMahogany;
             });
+            corAtual = colorMahogany
             break;
         default:
             console.log("Invalid color name");
@@ -384,37 +393,32 @@ function mudarCor(name) {
     }
 };
 
+const textureWood =  new THREE.TextureLoader().load('Wood_Material_2K.png');
+const textureWicker =  new THREE.TextureLoader().load('Wicker2_Material_1K.png');
+
+const materialWood = new THREE.MeshPhysicalMaterial({
+    color: cor_antiga,
+    map: textureWood,
+});
+const materialWicker = new THREE.MeshPhysicalMaterial({
+    color: cor_antiga,
+    map: textureWicker,
+});
+
 function mudarMaterial(name) {
-    let materialWicker;
-    let materialWood;
-    const textureWicker = loader.load('Wicker2_Color_1K.png', (texture) => {
-        materialWicker = new THREE.MeshBasicMaterial( {
-            map: texture
-        } );
-    });
-    const textureWood = loader.load('Wood_Color_2K.png', (texture) => {
-        materialWood = new THREE.MeshBasicMaterial( {
-            map: texture
-        } );
-    });
     switch(name) {
         case "wicker":
             changableObjects.forEach(obj => {
-                console.log(obj.material.color);
-                const oldColor = obj.material.color.clone();
-                console.log(oldColor);
-                obj.material.map = textureWicker;
-                obj.material.color.copy(oldColor);
+                obj.material.map = materialWicker;
+                obj.material.color = corAtual;
             });
             console.log("changed material");
             console.log(changableObjects);
             break;
         case "wood":
             changableObjects.forEach(obj => {
-                const oldColor = obj.material.color.clone();
-                console.log(oldColor);
-                obj.material.map = textureWood;
-                obj.material.color.copy(oldColor);
+                obj.material.map = materialWood;
+                obj.material.color = corAtual;
             });
             console.log("changed material");
             console.log(changableObjects);
@@ -424,6 +428,18 @@ function mudarMaterial(name) {
             break;
     }
 }
+
+const tirarPes = document.getElementById("btn-tirar-pes");
+
+tirarPes.addEventListener("click", () => {
+    console.log(pes);
+    if (pes.visible) {
+        pes.visible = false;
+    } else {
+        pes.visible = true;
+    }
+});
+
 
 botaoCorWood.addEventListener("click", () => {
     mudarCor("wood");
