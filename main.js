@@ -8,14 +8,18 @@ const botaoCorWood = document.getElementById("btn-color-wood");
 const botaoCorLightOak = document.getElementById("btn-color-light-oak");
 const botaoCorWalnut = document.getElementById("btn-color-walnut");
 const botaoCorMahogany = document.getElementById("btn-color-mahogany");
-const botaoMaterialWicker = document.getElementById("btn-material-wicker2");
-const botaoMaterialWood = document.getElementById("btn-material-wood");
+// const botaoMaterialWicker = document.getElementById("btn-material-wicker2");
+// const botaoMaterialWood = document.getElementById("btn-material-wood");
 const tirarPes = document.getElementById("btn-tirar-pes");
+
+
 // --------------------------
 
 let cor_antiga = null;
-let material_antigo = null;
+// let material_antigo = null;
 let pes = null;
+
+// --------------------------
 
 const cena = new THREE.Scene();
 cena.background = new THREE.Color( 0xeeeefa );
@@ -89,7 +93,7 @@ carregador.load(
                 changableObjects.push(x);
                 if (i===1) {
                     cor_antiga = x.material.color.clone();
-                    material_antigo = x.material.clone();
+                    // material_antigo = x.material.clone();
                     // console.log("Cor antiga: ");
                     // console.log(cor_antiga)
                     // console.log("Material_antigo");
@@ -294,8 +298,8 @@ function mudarCor(name) {
 
 
 // -------- Material (NOT WORKING) ----------
-// const textureWood =  new THREE.TextureLoader().load('Wood_Material_2K.png');
-// const textureWicker =  new THREE.TextureLoader().load('Wicker2_Material_1K.png');
+// const textureWood =  new THREE.TextureLoader().load('/model/materials/Wood_Normal_2K.png');
+// const textureWicker =  new THREE.TextureLoader().load('/model/materials/Wicker2_Normal_1K.png');
 // const materialWood = new THREE.MeshPhysicalMaterial({
 //     color: cor_antiga,
 //     map: textureWood,
@@ -361,6 +365,14 @@ botaoAutoRotate.addEventListener("change", ()=> {
         controlos.autoRotate = 0;
     }
 });
+
+// botaoMaterialWicker.addEventListener("click", () => {
+//     mudarMaterial("wicker");
+// });
+
+// botaoMaterialWood.addEventListener("click", () => {
+//     mudarMaterial("wood");
+// });
 
 meuCanvas.addEventListener("click", (evento) => {
     const limites = evento.target.getBoundingClientRect();
